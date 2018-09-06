@@ -1,10 +1,6 @@
-import React from 'react';
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import { RkComponent } from '../rkComponent';
+import React from 'react'
+import {Text, TextInput, TouchableOpacity} from 'react-native'
+import {RkComponent} from '../rkComponent'
 
 /**
  * `RkTextInput` is a component to be used as a basic text input.
@@ -134,7 +130,7 @@ import { RkComponent } from '../rkComponent';
  */
 
 export class RkTextInput extends RkComponent {
-  componentName = 'RkTextInput';
+  componentName = 'RkTextInput'
   typeMapping = {
     container: {
       underlineWidth: 'borderBottomWidth',
@@ -149,73 +145,69 @@ export class RkTextInput extends RkComponent {
       labelColor: 'color',
       labelFontSize: 'fontSize',
     },
-  };
+  }
 
   static defaultProps = {
     editable: true,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    this.focusInput = this.focusInput.bind(this);
+    super(props)
+    this.focusInput = this.focusInput.bind(this)
   }
 
   focusInput() {
     if (this.props.editable) {
-      this.inputRef.focus();
+      this.inputRef.focus()
     }
   }
 
   displayLabel(label, labelStyle) {
     if (typeof label === 'string') {
       return (
-        <Text style={labelStyle} onPress={this.focusInput}>{label}</Text>
-      );
+        <Text style={labelStyle} onPress={this.focusInput}>
+          {label}
+        </Text>
+      )
     }
     return React.cloneElement(label, {
-      onPress: (e) => {
-        this.inputRef.focus();
+      onPress: e => {
+        this.inputRef.focus()
         if (label.props.onPress) {
-          label.props.onPress(e);
+          label.props.onPress(e)
         }
       },
       style: [labelStyle, label.props.style],
-    });
+    })
   }
 
   render() {
-    const {
-      style,
-      label,
-      inputStyle,
-      ...inputProps
-    } = this.props;
-    const { container: boxStyle, input, label: labelS } = this.defineStyles();
-    const placeholderColor = this.extractNonStyleValue(input, 'placeholderTextColor');
-    inputProps.labelStyle = [labelS, inputProps.labelStyle];
-    inputProps.style = [input, inputStyle];
-    inputProps.placeholderTextColor = placeholderColor;
-    boxStyle.push(style);
+    const {style, label, inputStyle, ...inputProps} = this.props
+    const {container: boxStyle, input, label: labelS} = this.defineStyles()
+    const placeholderColor = this.extractNonStyleValue(input, 'placeholderTextColor')
+    inputProps.labelStyle = [labelS, inputProps.labelStyle]
+    inputProps.style = [input, inputStyle]
+    inputProps.placeholderTextColor = placeholderColor
+    boxStyle.push(style)
 
-    let temp=[];
-    for(let i=0;i<boxStyle.length;i++){
-      if(boxStyle[i]!=undefined && !boxStyle[i].fontSize){
-        temp.push(boxStyle[i]); 
+    let temp = []
+    for (let i = 0; i < boxStyle.length; i++) {
+      if (boxStyle[i] != undefined && !boxStyle[i].fontSize) {
+        temp.push(boxStyle[i])
       }
     }
-    boxStyle = temp;
-    
+
     return (
-      <TouchableOpacity activeOpacity={1} onPress={this.focusInput} style={boxStyle}>
+      <TouchableOpacity activeOpacity={1} onPress={this.focusInput} style={temp}>
         {label && this.displayLabel(label, inputProps.labelStyle)}
         <TextInput
-          underlineColorAndroid='transparent'
-          ref={(inputValue) => {
-            this.inputRef = inputValue;
+          underlineColorAndroid="transparent"
+          ref={inputValue => {
+            this.inputRef = inputValue
           }}
           {...inputProps}
         />
       </TouchableOpacity>
-    );
+    )
   }
 }
